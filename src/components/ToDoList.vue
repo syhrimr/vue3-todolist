@@ -1,6 +1,6 @@
 <template>
   <ToDoInput @add="receiveInput" />
-  <ul class="list_wrapper">
+  <ul class="list-wrapper">
     <template v-for="item in list" :key="item">
       <li>
         <ToDoItem
@@ -62,3 +62,11 @@ function deleteTodoInList({ title }: TodoItem): void {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.list-wrapper {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
