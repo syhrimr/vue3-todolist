@@ -3,7 +3,11 @@
   <ul>
     <template v-for="item in list" :key="item">
       <li>
-        <ToDoItem :todo="item" />
+        <ToDoItem
+          :todo="item"
+          @setDone="setDoneToList"
+          @delete="deleteTodoInList"
+        />
       </li>
     </template>
   </ul>
@@ -29,5 +33,21 @@ onMounted(() => {
 
 function receiveInput(value) {
   list.value.unshift(value);
+}
+
+function setDoneToList({ title, isDone }) {
+  for (let i in list.value) {
+    if (list.value[i].title === title) {
+      list.value[i].isDone = isDone;
+      break;
+    }
+  }
+
+  console.log(list.value);
+}
+
+function deleteTodoInList({ title }) {
+  const index = list.value.indexOf(title);
+  list.value.splice(index, 1);
 }
 </script>
