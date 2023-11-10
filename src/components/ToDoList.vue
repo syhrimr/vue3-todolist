@@ -1,6 +1,6 @@
 <template>
   <ToDoInput @add="receiveInput" />
-  <ul>
+  <ul class="list_wrapper">
     <template v-for="item in list" :key="item">
       <li>
         <ToDoItem
@@ -17,20 +17,28 @@
 import ToDoInput from './ToDoInput.vue';
 import ToDoItem from './ToDoItem.vue';
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { TodoItem } from "@/models";
 
 const list = ref<TodoItem[]>([]);
 
 onMounted(() => {
-  list.value = [
-    {
-      title: "Lunch",
-      description: "Lunch with banana",
-      isDone: false
-    }
-  ]
+  const initList = localStorage.getItem("t_TodoItems");
+
+  if (initList !== null) {
+    list.value = JSON.parse(initList);
+  }
 });
+
+watch(
+  () => list.value,
+  (value) => {
+    localStorage.setItem("t_TodoItems", JSON.stringify(value));
+  },
+  {
+    deep: true
+  }
+);
 
 function receiveInput(value: TodoItem): void {
   list.value.unshift(value);
