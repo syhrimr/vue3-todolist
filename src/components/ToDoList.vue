@@ -13,13 +13,14 @@
   </ul>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import ToDoInput from './ToDoInput.vue';
 import ToDoItem from './ToDoItem.vue';
 
 import { ref, onMounted } from 'vue';
+import { TodoItem } from "@/models";
 
-const list = ref([]);
+const list = ref<TodoItem[]>([]);
 
 onMounted(() => {
   list.value = [
@@ -31,23 +32,25 @@ onMounted(() => {
   ]
 });
 
-function receiveInput(value) {
+function receiveInput(value: TodoItem): void {
   list.value.unshift(value);
 }
 
-function setDoneToList({ title, isDone }) {
+function setDoneToList({ title, isDone }: TodoItem): void {
   for (let i in list.value) {
     if (list.value[i].title === title) {
       list.value[i].isDone = isDone;
       break;
     }
   }
-
-  console.log(list.value);
 }
 
-function deleteTodoInList({ title }) {
-  const index = list.value.indexOf(title);
-  list.value.splice(index, 1);
+function deleteTodoInList({ title }: TodoItem): void {
+  for (let i in list.value) {
+    if (list.value[i].title === title) {
+      list.value.splice(parseInt(i), 1);
+      break;
+    }
+  }
 }
 </script>

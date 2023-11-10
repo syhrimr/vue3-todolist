@@ -12,12 +12,13 @@
   </div>
 </template>
 
-<script setup>
-import { defineProps, defineEmits, computed } from 'vue';
+<script setup lang="ts">
+import { defineProps, defineEmits, computed, PropType } from 'vue';
+import { TodoItem } from "@/models"
 
 const props = defineProps({
   todo: {
-    type: Object,
+    type: Object as PropType<TodoItem>,
     required: true,
     default: () => {}
   }

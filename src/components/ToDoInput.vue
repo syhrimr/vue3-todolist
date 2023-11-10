@@ -1,20 +1,26 @@
 <template>
   <form @submit.prevent="addToDoItem">
-    <input v-model="title" placeholder="Add your new to do item" />
-    <input v-model="description" placeholder="(Optional) Add detail to your to do item" />
+    <input
+      v-model="title"
+      placeholder="Add your new to do item"
+    />
+    <input
+      v-model="description"
+      placeholder="(Optional) Add detail to your to do item"
+    />
     <button type="submit" title="Add">Add</button>
   </form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, defineEmits } from 'vue';
 
 const emits = defineEmits(["add"])
 
-const title = ref("");
-const description = ref("");
+const title = ref<string>("");
+const description = ref<string>("");
 
-function addToDoItem() {
+function addToDoItem(): void {
   emits("add", {
     title: title.value,
     description: description.value,
