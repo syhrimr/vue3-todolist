@@ -10,17 +10,11 @@ import { RouterView } from 'vue-router';
 import { onMounted, ref } from "vue";
 
 import { useStore } from "@/stores";
-import { TodoItem } from "@/models";
 
 const store = useStore();
 
 onMounted(() => {
-  const initList = localStorage.getItem("t_TodoItems");
-
-  if (initList !== null) {
-    const list = JSON.parse(initList) as TodoItem[];
-    store.allList = list;
-  }
+  store.getListFromLocalStorage();
 });
 
 const navItems = ref([

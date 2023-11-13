@@ -33,6 +33,14 @@ export const useStore = defineStore("store", {
           break;
         }
       }
+    },
+    getListFromLocalStorage() {
+      const initList = localStorage.getItem("t_TodoItems");
+
+      if (initList !== null) {
+        const list = JSON.parse(initList) as TodoItem[];
+        this.allList = list;
+      }
     }
   }
 })
