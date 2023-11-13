@@ -1,9 +1,45 @@
 <template>
-  <MainPage />
+  <NavMenu :nav-item="navItems" />
+  <RouterView />
 </template>
 
-<script setup>
-  import MainPage from "@/pages/MainPage.vue";
+<script lang="ts" setup>
+import NavMenu from './components/NavMenu.vue';
+import { RouterView } from 'vue-router';
+
+import { onMounted, ref } from "vue";
+
+import { useStore } from "@/stores";
+import { TodoItem } from "@/models";
+
+const store = useStore();
+
+onMounted(() => {
+  const initList = localStorage.getItem("t_TodoItems");
+
+  if (initList !== null) {
+    const list = JSON.parse(initList) as TodoItem[];
+    store.allList = list;
+  }
+});
+
+const navItems = ref([
+  {
+    id: 1,
+    to: "/form",
+    name: "Form"
+  },
+  {
+    id: 2,
+    to: "/todo",
+    name: "Todo List"
+  },
+  {
+    id: 3,
+    to: "/done",
+    name: "Done List"
+  }
+]);
 </script>
 
 <style>
