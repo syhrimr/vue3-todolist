@@ -56,15 +56,9 @@
   );
 
   function setDoneToList({ title, isDone }: TodoItem): void {
-    console.log(isDone);
     for (let i in allList.value) {
       if (allList.value[i].title === title) {
         allList.value[i].isDone = isDone;
-        if (isDone) {
-          doneList.value.unshift(allList.value[i]);
-        } else {
-          todoList.value.unshift(allList.value[i]);
-        }
         break;
       }
     }
@@ -81,6 +75,5 @@
 
   function receiveInput(value: TodoItem): void {
     allList.value.unshift(value);
-    todoList.value.unshift(value);
   }
 </script>
