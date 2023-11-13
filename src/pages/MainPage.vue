@@ -25,55 +25,32 @@
   import ToDoList from "@/components/ToDoList.vue";
   import ToDoItem from "@/components/ToDoItem.vue";
 
-  import { ref, onMounted, watch } from "vue";
+  import { onMounted, computed } from "vue";
+  import { useStore } from "@/stores";
   import { TodoItem } from "@/models";
 
-  const allList = ref<TodoItem[]>([]);
-  const todoList = ref<TodoItem[]>([]);
-  const doneList = ref<TodoItem[]>([]);
+  const store = useStore();
+  const todoList = computed(() => store.todoList);
+  const doneList = computed(() => store.doneList);
 
   onMounted(() => {
     const initList = localStorage.getItem("t_TodoItems");
 
     if (initList !== null) {
       const list = JSON.parse(initList) as TodoItem[];
-      allList.value = list;
-      todoList.value = list.filter((item) => !item.isDone);
-      doneList.value = list.filter((item) => item.isDone);
+      store.allList = list;
     }
   });
 
-  watch(
-    () => allList.value,
-    (value) => {
-      localStorage.setItem("t_TodoItems", JSON.stringify(value));
-      todoList.value = value.filter((item) => !item.isDone);
-      doneList.value = value.filter((item) => item.isDone);
-    },
-    {
-      deep: true
-    }
-  );
-
-  function setDoneToList({ title, isDone }: TodoItem): void {
-    for (let i in allList.value) {
-      if (allList.value[i].title === title) {
-        allList.value[i].isDone = isDone;
-        break;
-      }
-    }
+  function setDoneToList(todo: TodoItem): void {
+    store.setDoneToList(todo);
   }
 
   function deleteTodoInList({ title }: TodoItem): void {
-    for (let i in allList.value) {
-      if (allList.value[i].title === title) {
-        allList.value.splice(parseInt(i), 1);
-        break;
-      }
-    }
+    store.deleteToDoItem(title);
   }
 
   function receiveInput(value: TodoItem): void {
-    allList.value.unshift(value);
+    store.pushFormDataToList(value);
   }
 </script>
